@@ -1,0 +1,11 @@
+<!-- Adapted from TA project 4 discussion: https://ccle.ucla.edu/pluginfile.php/4451405/mod_resource/content/0/project%204%20discussion.pdf -->
+<form>
+    <label for="title">Title:</label>
+    <input type="text" id="edit-title" name="title" [(ngModel)]="post.title" value="{{ post.title }}"><br><br>
+    <label for="content">Body:</label>
+    <textarea type="text" id="edit-body" name="body" [(ngModel)]="post.body" rows="4" cols="50"> {{ post.body }} </textarea><br><br>
+    <p>Last Modified at {{ post.modified | date:'HH:mm:ss MM/dd/yyyy' : 'UTC' }}</p><br>
+    <button type="button" id="edit-save-button" (click)="savePost.emit(post)">Save</button>
+    <button type="button" id="edit-delete-button" (click)="deletePost.emit(post)">Delete</button>
+    <button type="button" id="edit-preview-button" (click)="previewPost.emit(post)">Preview</button>
+</form>

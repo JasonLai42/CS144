@@ -1,0 +1,90 @@
+All Parts:
+DONE    - Sanitize inputs
+DONE    - Check status codes
+DONE    - In our project, all dates are stored as a number in MongoDB, which represents milliseconds since the the Unix epoch (Jan 1, 1970 UTC). You can 
+                convert a JavaScript Date object to this number using its getTime() method. Conversely, you can convert this number to a Date object by 
+                passing it as the constructor parameter of Date or by calling a date object’s setTime() method.
+DONE    - Please remember that all MongoDB commands must be executed asynchronously either using callback functions or using a Promise object (potentially 
+                with await keyword)
+DONE    - Test debug techniques in discussion slides
+
+Part B:
+DONE    - Handle /blog/:username/:postid endpoint (GET method; Return an HTML-formatted page that shows the blog post with postid written by username.)
+DONE    - Handle /blog/:username (GET method; Return an HTML page that contains first 5 blog posts (by postid) from username. If the user has more than 
+                                            5 posts, the page should contain a “next” button (or hyperlink) that link to the next 5 posts (according 
+                                            to the postid) by the user.)
+DONE    - All blog posts returned from the two URL patterns should be rendered in HTML from markdown using the commonmark.js module, both title and body.
+DONE    - The second URL pattern /blog/:username must return the first 5 posts (by postid) from username. When there are more posts from the user the 
+            returned page must contain a “next” link, which points to a page with the next 5 posts according to the postid by the user. Make sure that the 
+            “next” link is implemented as an HTML <a> element with id="next_link" and href pointing to the URL of the “next page”.
+DONE    - The second URL pattern /blog/:username must take an optional query string start=:postid, like: 
+                /blog/cs144?start=3
+            When this optional query string exists, the response must include the next 5 posts by cs144 whose postid is 3 or above.
+DONE    - If :username is missing in the request or :username or :postid does not exist in the database, return status code 404.
+
+Part C:
+DONE    - Handle /login (GET method; The request may optionally include redirect=:redirect query string. Given the request, the server should return an HTML 
+                page that contains an HTML <form> with at least two <input> elements with names username and password. When the user inputs their username and 
+                password in these input elements, and presses the submit button, the page should issue a request POST /login with 
+                username=:username&password=:password&redirect=:redirect in the body, where the redirect=:redirect is added only if it was included as part of 
+                the GET /login request.)
+DONE    - Remember that when a browser generates an HTTP request from <form> fields with POST method, user inputs are included in the body of the generated 
+                request with Content-Type: application/x-www-form-urlencoded.
+DONE    - Handle /login (POST method; The request body must contain username=:username&password=:password, optionally with redirect=:redirect, with 
+                Content-Type: application/x-www-form-urlencoded. Depending on the passed parameters, you need to take the following action:)
+DONE    A. If the request does not have username or password parameter, the server must return the status code “401 (Unauthorized)”.
+DONE    B. If the request has username and password parameters:
+DONE        i. If the provided username and password do not match our record, the server must return the status code “401 (Unauthorized)”. The response 
+                    body must include an HTML <form> with username and password <input> elements, so that the user can reattempt authentication.
+DONE        ii. If the provided username and password match our record, the server must set an authentication session cookie in JSON Web Token (JWT) (more on 
+                    this later) and
+DONE            a. If the request does not contain redirect parameter, the server must return status code “200 (OK)” with the body saying that the 
+                        authentication was successful.
+DONE            b. If the request contains redirect parameter, the server must redirect the browser to :redirect by returning the status code “302 (Found)” 
+                    together with the HTTP header Location: pointing to the :redirect value from the request. Note that the MDN page on HTTP redirections 
+                    explains different mechanisms for redirecting the browser to a different page automatically and the res.redirect() function can be used to 
+                    generate 3XX redirect response in Express.
+DONE    - In addition, recall that the stored user passwords are all hash values obtained by applying the bcrypt hash function. Therefore, to match a user’s 
+            stored password against what she provides during authentication, you will need to use node.js bcryptjs module. Read the bcryptjs package page to 
+            learn how you can use it to compare a user’s password against a hash value.
+DONE    - Once the user’s authenticity is established through the user-provided password, our server must establish a “authenticated session”, so that it can 
+            recognize that any future request coming from the same browser comes from the authenticated user. There are a number of ways to implement this. In 
+            this project, you must use JSON Web Token (JWT) for this purpose. If you are not familiar with JWT, go over the JWT introduction page to learn what 
+            it is and how it can be used.
+DONE    - Now implement the login page. Remember that after a successful authentication by the user (i.e., the user’s username and password match), the server 
+            should generate an appropriate JWT, set it as the value of the cookie jwt (lowercase) and redirect the request to the redirect parameter in the 
+            request if it exists. If the authentication fails, (username or password is missing or they don’t match with our record), the server must return a 
+            page with the username and password input box, so that they user can try again.
+
+
+Part D:
+DONE    - This REST API must be protected behind authentication. That is, if any request to /api/posts does not contain a valid jwt cookie with matching 
+                username (i.e., if the jwt cookie is not included in the HTTP header, if the included jwt has expired, or if the username in jwt does not match 
+                the username in the path or the body), the server should reply with “401 (Unauthorized)” status code.
+DONE    - GET /api/posts?username=:username: The server should return all blog posts by :username. The returned posts should be included in the body of the 
+                response as a JSON array with Content-Type: application/json. Each post in the array should have at least five fields, postid, title, body, 
+                created, and modified (case sensitive). If the user does not exist or have no post, return an empty JSON array. If successful, the server should 
+                respond with the status code “200 (OK)”.
+DONE    - GET /api/posts?username=:username&postid=:postid: The server should return the blog post with :postid by :username. If such a post exists, the 
+                response status code should be “200 (OK)”, and the post should be included in a JSON body with at least five fields, postid, title, body, created, 
+                and modified (case sensitive). If not, the response status code should be “404 (Not found)”.
+DONE    - DELETE /api/posts?username=:username&postid=:postid: The server should delete the existing blog post with :postid by :username from the database. 
+                If successful, the server should reply with “204 (No content)” status code. If there is no such post, the server should reply with “404 (Not 
+                found)” status code.
+DONE    - POST /api/posts: The request body should contain a JSON object (Content-Type: application/json) with four fields, username, postid, title, and body.
+DONE        1. When postid=0: The server should insert a new blog post whose username, title, and body values come from the request. The inserted postid must 
+                    be the user’s maxid (i.e., the maxid field of username in the Users collection) + 1, which should never be smaller than 1. The inserted 
+                    created and modified fields must be the current time. The server must also increase the user’s maxid field by 1 in the Users collection. If 
+                    successful, the server should reply with “201 (Created)” status code with a JSON body with postid, created, and modified fields that reflect 
+                    the inserted values.
+DONE        2. When postid>0: The server should update the existing blog post with postid by username with the title and body values from the request. The 
+                    modified field should be updated to the current time as well. If the update is successful, the server should reply with “200 (OK)” status code 
+                    with a JSON body that has a single modified field with the new modified value. If there is no blog post with postid by username, the server 
+                    should reply with “404 (Not found)” status code.
+DONE    - All dates transmitted and stored in MongoDB should be in milliseconds since the the Unix epoch (Jan 1, 1970 UTC) in number type.
+DONE    - If a request does not meet our requirements (such as not including required fields, their values are in an incorrect format, etc.), the server must 
+                reply with “400 (Bad request)” status code.
+DONE    - Once you made sure that everything works fine, protect this REST API behind authentication. That is, before you process any request to this API, 
+                first make sure that the request contains a valid jwt cookie with the matching username.
+DONE    - Please make sure that you return the correct status code according to our spec. If your status code is diffrent from our spec you will get zero point 
+                for the part, even if the response body may contain reasonable content.

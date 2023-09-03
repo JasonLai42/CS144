@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= page_title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= page_title %></h1>
+    <ul>
+        <% for (let post of posts) { %>
+            <li><div><%- post.title %></div></li>
+            <li><div><%- post.body %></div></li>
+            <li><div>Date created: <%= post.created %></div></li>
+            <li><div>Date modified: <%= post.modified %></div></li>
+        <% } %>
+    </ul>
+    <a id="next_link" href="http://localhost:3000/blog/<%= username %>?start=<%= postid %>">Next Page</a>
+  </body>
+</html>

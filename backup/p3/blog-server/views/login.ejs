@@ -1,0 +1,25 @@
+<!-- Some code adapted from https://www.w3schools.com/howto/howto_css_login_form.asp -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= page_title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div><h1><%= page_title %></h1></div>
+    <form action="http://localhost:3000/login" method="POST">
+        <label for="username"><b>Username</b></label><br/>
+        <input type="text" name="username" placeholder="Enter Username">
+        <br/>
+        <label for="password"><b>Password</b></label><br/>
+        <input type="text" name="password" placeholder="Enter Password">
+        <br/>
+        <br/>
+        <!-- redirect will be false if it's null or empty string -->
+        <% if(redirect != null) { %>
+          <input type="hidden" name="redirect" value="<%= redirect %>">
+        <% } %>
+        <div><button type="submit">Login</button></div>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<!-- Adapted from TA project 4 discussion: https://ccle.ucla.edu/pluginfile.php/4451405/mod_resource/content/0/project%204%20discussion.pdf -->
+<div>
+  <app-list [posts]="posts"
+            (openPost)="openPost($event);"
+            (newPost)="newPost();"></app-list>
+</div>
+
+<div *ngIf='(appState == 1)'>
+  <app-edit [post]="currentPost"
+            (savePost)="savePost($event);" 
+            (deletePost)="deletePost($event);" 
+            (previewPost)="previewPost($event);"></app-edit>
+</div>
+
+<div *ngIf='(appState == 2)'>
+  <app-preview [post]="currentPost" 
+              (editPost)="editPost($event);"></app-preview> 
+</div>

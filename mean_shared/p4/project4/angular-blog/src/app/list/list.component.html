@@ -1,0 +1,19 @@
+<!-- Adapted from TA project 4 discussion: https://ccle.ucla.edu/pluginfile.php/4451405/mod_resource/content/0/project%204%20discussion.pdf -->
+<button type="button" id="list-new-button" (click)="newPost.emit()">New Post</button>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 30%">Title</th>
+            <th style="width: 30%">Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let post of posts" (click)="openPost.emit(post);">
+            <div id="list-post-{{ post.postid }}">
+                <td>{{ post.title }}</td>
+                <td>{{ post.created | date:'HH:mm:ss MM/dd/yyyy' : 'UTC' }}</td>
+                <td style="white-space: nowrap"></td>
+            </div>
+        </tr>
+    </tbody>
+</table>

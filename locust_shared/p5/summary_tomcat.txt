@@ -1,0 +1,25 @@
+[2021-05-28 03:41:15,759] b97fd151cd99/INFO/locust.main: Run time limit set to 30 seconds
+[2021-05-28 03:41:15,761] b97fd151cd99/INFO/locust.main: Starting Locust 1.5.3
+[2021-05-28 03:41:15,765] b97fd151cd99/INFO/locust.runners: Spawning 400 users at the rate 100 users/s (0 users already running)...
+[2021-05-28 03:41:24,604] b97fd151cd99/INFO/locust.runners: All users spawned: MyUser: 400 (400 total running)
+[2021-05-28 03:41:45,527] b97fd151cd99/INFO/locust.main: Time limit reached. Stopping Locust.
+[2021-05-28 03:41:45,532] b97fd151cd99/INFO/locust.runners: Stopping 400 users
+[2021-05-28 03:41:46,243] b97fd151cd99/INFO/locust.runners: 400 Users have been stopped, 0 still running
+[2021-05-28 03:41:46,246] b97fd151cd99/INFO/locust.main: Running teardowns...
+[2021-05-28 03:41:46,248] b97fd151cd99/INFO/locust.main: Shutting down (exit code 0), bye.
+[2021-05-28 03:41:46,248] b97fd151cd99/INFO/locust.main: Cleaning up runner...
+ Name                                                          # reqs      # fails  |     Avg     Min     Max  Median  |   req/s failures/s
+--------------------------------------------------------------------------------------------------------------------------------------------
+ GET /editor/post?action=open                                    8902     0(0.00%)  |     215       4    1483     190  |  292.28    0.00
+ POST /editor/post?action=save                                   2269     0(0.00%)  |     226       7    1572     210  |   74.50    0.00
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregated                                                     11171     0(0.00%)  |     217       4    1572     200  |  366.78    0.00
+
+Response time percentiles (approximated)
+ Type     Name                                                              50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|------------------------------------------------------------|---------|------|------|------|------|------|------|------|------|------|------|------|
+ GET      /editor/post?action=open                                          190    280    330    350    420    460    520    540   1200   1500   1500   8902
+ POST     /editor/post?action=save                                          210    290    330    360    420    470    530    560   1400   1600   1600   2269
+--------|------------------------------------------------------------|---------|------|------|------|------|------|------|------|------|------|------|------|
+ None     Aggregated                                                        200    280    330    360    420    470    520    540   1300   1500   1600  11171
+
